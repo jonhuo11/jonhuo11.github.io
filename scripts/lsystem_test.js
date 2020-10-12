@@ -31,6 +31,8 @@ class Scene {
         createCanvas(this.canvasSize.x, this.canvasSize.y);
         background(this.backgroundColor);
         angleMode(DEGREES);
+        colorMode(RGB, 255);
+        frameRate(30);
         translate(this.canvasSize.x/2, this.canvasSize.y);
         rotate(180);
 
@@ -65,28 +67,30 @@ class Scene {
                 new Command({
                     symbol : "F",
                     action : ({iter = 1, mod = 1}) => {
-                        line(0, 0, 0, 20 * (1/iter));
-                        translate(0, 20 * (1/iter));
+                        stroke(38, 0, 10);
+                        strokeWeight(5 * (1/iter));
+                        line(0, 0, 0, 40 * (1/iter));
+                        translate(0, 40 * (1/iter));
                     }
                 }),
                 // move forward without drawing
                 new Command({
                     symbol : "G",
                     action : ({iter = 1, mod = 1}) => {
-                        translate(0, 20 * (1/iter));
+                        translate(0, 40 * (1/iter));
                     }
                 }),
                 // turn right
                 new Command({
                     symbol : "+",
                     action : ({iter = 1, mod = 1}) => {
-                        rotate(30 * mod);
+                        rotate(25 * mod);
                     }
                 }),
                 new Command({
                     symbol : "-",
                     action : ({iter = 1, mod = 1}) => {
-                        rotate(-30);
+                        rotate(-25);
                     }
                 }),
                 // save position
@@ -311,7 +315,7 @@ class Tree extends LSystem {
 // run the scene
 const scene = new Scene({
     name : "LSystem",
-    canvasSize : new p5.Vector(1200,800)
+    canvasSize : new p5.Vector(800, 800)
 });
 Object.seal(scene);
 
