@@ -74,6 +74,42 @@ var tree1 = {
     }
 };
 
+// tree 2
+var tree2 = {
+    abc : {
+        "A" : "A[-B][+B]",
+        "B" : "A[-B]A[+A]"
+    },
+    cmd : {
+        "A" : (i,h,r=1) => {
+            var l = 0.02 * h;
+
+            strokeWeight(2 * 1/i);
+            line(0, 0, 0, l * (i * 0.5));
+            translate(0, l * (i * 0.5));
+        },
+        "B" : (i,h,r=1) => {
+            var l = 0.01 * h * r;
+
+            strokeWeight(1 * 1/i);
+            line(0, 0, 0, l * (i * 0.5));
+            translate(0, l * (i * 0.5));
+        },
+        "+" : (i,h,r=1) => {
+            rotate(-20 * r);
+        },
+        "-" : (i,h,r=1) => {
+            rotate(20 * r * (1/i));
+        },
+        "[" : (i,h,r=1) => {
+            push();
+        },
+        "]" : (i,h,r=1) => {
+            pop();
+        }
+    }
+};
+
 var renderScene = () => {
     var w = windowWidth;
     var h = windowHeight;
@@ -82,15 +118,16 @@ var renderScene = () => {
     // express all non-zero lengths and widths as % of window width/height
     translate(windowWidth/2, windowHeight);
     rotate(180);
-    background(220);
+    background("#d9fcfc");
 
     // random number generator
-    var randPercentRange = 0.4;
+    var randPercentRange = 0.5;
     var randBool = (Math.random() >= 0.5 ? 1 : -1);
     var randPercent = 1 + (randBool * (Math.random() * randPercentRange));
 
     // draw trees
     drawSystem(tree1.abc, tree1.cmd, "X", 4, 0.1 * w * randPercent, 0, h, randPercent);
+    drawSystem(tree2.abc, tree2.cmd, "A", 5, -0.2 * w * randPercent, 0, h, randPercent);
 
     console.log("scene drawn!");
 };
