@@ -1,6 +1,6 @@
 // more optimized version of lsystem_test.js to be used on final website
 
-var drawSystem = (abc, cmd, axiom, iter, x, y) => {
+var drawSystem = (abc, cmd, axiom, iter, x, y, height) => {
     var i = 0;
     var str = axiom;
     var next = "";
@@ -23,8 +23,8 @@ var drawSystem = (abc, cmd, axiom, iter, x, y) => {
         // draw the current iteration of string
         for (c of str) {
             if (cmd[c] != null) {
-                // run the command at c
-                cmd[c](i);
+                // run the command at c, scaling to iteration and window height percentage
+                cmd[c](i, height);
             }
         }
     }
@@ -34,111 +34,72 @@ var drawSystem = (abc, cmd, axiom, iter, x, y) => {
 // tree 1
 var tree1 = {
     abc : {
-        "F" : "FF+[+F-F-FP]-[-F+F+FP]"
-    },
-    cmd : {
-        "F" : (i) => {
-            stroke(38, 0, 10);
-            strokeWeight(3 * (1/i));
-            line(0, 0, 0, 20 * (1/i));
-            translate(0, 20 * (1/i));
-        },
-        "P" : (i) => {
-            noStroke();
-            fill(255, 192, 203);
-            ellipse(0, 0, 10 * (1/i), 15 * (1/i));
-        },
-        "+" : (i) => {
-            rotate(30);
-        },
-        "-" : (i) => {
-            rotate(-30);
-        },
-        "[" : (i) => {
-            push();
-        },
-        "]" : (i) => {
-            pop();
-        }
-    }
-};
-
-// tree 2
-var tree2 = {
-    abc : {
-        "F" : "F",
-        "X" : "F[+X][-X]F"
-    },
-    cmd : {
-        "F" : (i) => {
-            stroke("#7c7f59");
-            strokeWeight(3 * (1/i));
-            line(0, 0, 0, 15 * (i * 0.2));
-            translate(0, 15 * (i * 0.2));
-        },
-        "X" : (i) => {
-            line(0, 0, 0, 10 * (i * 0.2));
-            translate(0, 10 * (i * 0.2));
-        },
-        "+" : (i) => {
-            rotate(8);
-        },
-        "-" : (i) => {
-            rotate(-27);
-        },
-        "[" : (i) => {
-            push();
-        },
-        "]" : (i) => {
-            pop();
-        }
-    }
-};
-
-// tree 3
-var tree3 = {
-    abc : {
-        "F" : "FF",
+        "F" : "FW",
         "X" : "F-[[X]+X]+F[+FX]-X"
     },
     cmd : {
-        "F" : (i) => {
+        "F" : (i,h,r=1) => {
+            var l = 0.01 * h;
+
+            strokeWeight(5 * 1/i);
+            line(0, 0, 0, l * (i * 0.5));
+            translate(0, l * (i * 0.5));
+        },
+        "W" : (i,h,r=1) => {
+            var l = 0.02 * h;
+
+            strokeWeight(4 * 1/i);
+            line(0, 0, 0, l * (i * 0.5));
+            translate(0, l * (i * 0.5));
+        },
+        "X" : (i,h,r=1) => {
+            var l = 0.005 * h;
+
             strokeWeight(2 * 1/i);
-            line(0, 0, 0, 16 * (i * 0.5));
-            translate(0, 16 * (i * 0.5));
+            line(0, 0, 0, l * (i * 0.5));
+            translate(0, l * (i * 0.5));
         },
-        "X" : (i) => {
-            line(0, 0, 0, 10 * (i * 0.5));
-            translate(0, 10 * (i * 0.5));
-        },
-        "+" : (i) => {
+        "+" : (i,h,r=1) => {
             rotate(-10 * i);
         },
-        "-" : (i) => {
+        "-" : (i,h,r=1) => {
             rotate(15);
         },
-        "[" : (i) => {
+        "[" : (i,h,r=1) => {
             push();
         },
-        "]" : (i) => {
+        "]" : (i,h,r=1) => {
             pop();
         }
     }
 };
 
-canvasX = 1200;
-canvasY = 600;
-var setup = () => {
-    createCanvas(canvasX, canvasY);
-    angleMode(DEGREES);
-    background("#6de4ed");
-    translate(canvasX/2, canvasY);
-    rotate(180);
+var renderScene = () => {
+    var w = windowWidth;
+    var h = windowHeight;
 
     // rendering the scene on startup
+    // express all non-zero lengths and widths as % of window width/height
+    translate(windowWidth/2, windowHeight);
+    rotate(180);
+    background(220);
 
-    //drawSystem(tree1.abc, tree1.cmd, "F", 4, 200, 0);
-    //drawSystem(tree2.abc, tree2.cmd, "X", 8, -200, 0);
-    drawSystem(tree3.abc, tree3.cmd, "X", 3, 0, 0);
+    drawSystem(tree1.abc, tree1.cmd, "X", 4, -0.1 * w, 0, h);
+};
 
+var canv;
+var setup = () => {
+    canv = createCanvas(windowWidth, windowHeight);
+    canv.parent("sketch");
+    canv.style("display", "block");
+    angleMode(DEGREES);
+
+    renderScene();
+};
+
+var windowResized = () => {
+    console.log("resized");
+    resizeCanvas(windowWidth, windowHeight);
+
+    renderScene();
 };
