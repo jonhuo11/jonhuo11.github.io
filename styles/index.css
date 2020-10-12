@@ -16,6 +16,22 @@ body {
 
 h1 {
     font-size: 3em;
+    margin: 0 0.6em;
+}
+h2 {
+    font-size: 2em;
+    margin: 0 0.6em;
+}
+p {
+    font-size: 1.5em;
+    margin: 0 0.6em;
+}
+
+img {
+    display: block;
+    max-width: 11em;
+    height: auto;
+    border-radius: 47%;
 }
 
 a {
@@ -25,14 +41,10 @@ a {
 }
 a:hover {
     text-decoration: none;
+    cursor: pointer;
 }
 .linksmall{
     font-size: 1em;
-}
-
-p {
-    font-size: 1.5em;
-    margin: 0 0.6em;
 }
 
 #overlay {

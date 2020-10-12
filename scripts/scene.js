@@ -1,6 +1,6 @@
 // more optimized version of lsystem_test.js to be used on final website
 
-var drawSystem = (abc, cmd, axiom, iter, x, y, height) => {
+var drawSystem = (abc, cmd, axiom, iter, x, y, height, r) => {
     var i = 0;
     var str = axiom;
     var next = "";
@@ -24,7 +24,7 @@ var drawSystem = (abc, cmd, axiom, iter, x, y, height) => {
         for (c of str) {
             if (cmd[c] != null) {
                 // run the command at c, scaling to iteration and window height percentage
-                cmd[c](i, height);
+                cmd[c](i, height, r);
             }
         }
     }
@@ -46,7 +46,7 @@ var tree1 = {
             translate(0, l * (i * 0.5));
         },
         "W" : (i,h,r=1) => {
-            var l = 0.02 * h;
+            var l = 0.02 * h * r;
 
             strokeWeight(4 * 1/i);
             line(0, 0, 0, l * (i * 0.5));
@@ -60,10 +60,10 @@ var tree1 = {
             translate(0, l * (i * 0.5));
         },
         "+" : (i,h,r=1) => {
-            rotate(-10 * i);
+            rotate(-10 * i * r);
         },
         "-" : (i,h,r=1) => {
-            rotate(15);
+            rotate(15 * r);
         },
         "[" : (i,h,r=1) => {
             push();
@@ -84,7 +84,15 @@ var renderScene = () => {
     rotate(180);
     background(220);
 
-    drawSystem(tree1.abc, tree1.cmd, "X", 4, -0.1 * w, 0, h);
+    // random number generator
+    var randPercentRange = 0.4;
+    var randBool = (Math.random() >= 0.5 ? 1 : -1);
+    var randPercent = 1 + (randBool * (Math.random() * randPercentRange));
+
+    // draw trees
+    drawSystem(tree1.abc, tree1.cmd, "X", 4, 0.1 * w * randPercent, 0, h, randPercent);
+
+    console.log("scene drawn!");
 };
 
 var canv;
@@ -98,7 +106,7 @@ var setup = () => {
 };
 
 var windowResized = () => {
-    console.log("resized");
+    console.log("window resize detected");
     resizeCanvas(windowWidth, windowHeight);
 
     renderScene();
