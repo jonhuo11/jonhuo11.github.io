@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata&family=Roboto+Mono:wght@300&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Inconsolata&family=Roboto+Mono:wght@300&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 /* mobile */
 
 body {
-    font-family: "Roboto Mono", monospace;
+    font-family: "Montserrat", monospace;
     font-size: 100%;
     background-color: #dcdcdc;
 }

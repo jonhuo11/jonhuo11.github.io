@@ -121,13 +121,13 @@ var renderScene = () => {
     background("#d9fcfc");
 
     // random number generator
-    var randPercentRange = 0.5;
+    var randPercentRange = 0.2;
     var randBool = (Math.random() >= 0.5 ? 1 : -1);
     var randPercent = 1 + (randBool * (Math.random() * randPercentRange));
 
     // draw trees
-    drawSystem(tree1.abc, tree1.cmd, "X", 4, 0.1 * w * randPercent, 0, h, randPercent);
-    drawSystem(tree2.abc, tree2.cmd, "A", 5, -0.2 * w * randPercent, 0, h, randPercent);
+    drawSystem(tree1.abc, tree1.cmd, "X", Math.round(4 * randPercent), 0.1 * w * randPercent, 0, h, randPercent);
+    drawSystem(tree2.abc, tree2.cmd, "A", Math.round(5 * randPercent), -0.2 * w * randPercent, 0, h, randPercent);
 
     console.log("scene drawn!");
 };
