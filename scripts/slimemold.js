@@ -13,7 +13,7 @@ https://pixijs.io/examples/#/demos-basic/container.js
 var trailmap;   // trails left by agents
                 // dictionary of format 
                 // {value: float}
-var trailmapClearQueue = [];
+//var trailmapClearQueue = [];
 
 var trailmapSize =
 {
@@ -79,25 +79,41 @@ var drawTile = function(tileId) // tileid given in "x,y"
     var x = parseInt(sp[0]);
     var y = parseInt(sp[1]);
     //console.log(trailmap[tileId]);
-    stroke(agentColor[0], agentColor[1], agentColor[2], trailmap[tileId]);
-    point(x, y);
+    var c = trailmap[tileId];
+    stroke(c, c, c);
+    point(x, y, 0);
 }
 
 // decay footprints
-var decayTrails = function()
+var decayTile = function(tileId)
 {
+    if (trailmap[tileId] > footprintDestroyThresholdPercent * 255)
+    {
+        trailmap[tileId] *= (1 - footprintDecayPercent);
+    }
+    else
+    {
+        trailmap[tileId] = 0; // optimization?
+    }
+    /*
     for (var tileId in trailmap)
     {
         if (trailmap[tileId] > footprintDestroyThresholdPercent * 255)
         {
             trailmap[tileId] *= (1 - footprintDecayPercent);
         }
+        else
+        {
+            trailmap[tileId] = 0; // optimization?
+        }
+        
         else if (trailmap[tileId] <= footprintDestroyThresholdPercent * 255)
         {
-            trailmapClearQueue.push(tileId); // remove to keep iterations low
+            
+            //trailmapClearQueue.push(tileId); // remove to keep iterations low
         }
-    }
-}
+    }*/
+};
 
 // leave a trail
 var footprint = function(x, y)
@@ -117,10 +133,13 @@ var walkAgent = function(a)
     var nx = a.x + dx;
     var ny = a.y + dy;
 
-    if ((nx < 0 || nx > trailmapSize.width) || (ny < 0 || ny > trailmapSize.height))
+    if (
+        (nx < -trailmapSize.width/2 || nx > trailmapSize.width/2) || 
+        (ny < -trailmapSize.height/2 || ny > trailmapSize.height/2)
+    )
     {
-        nx = Math.min(trailmapSize.width - 0.1, Math.max(0, nx));
-        ny = Math.min(trailmapSize.height - 0.1, Math.max(0, ny));
+        nx = Math.min((trailmapSize.width/2) - 0.1, Math.max(-trailmapSize.width/2, nx));
+        ny = Math.min(trailmapSize.height/2 - 0.1, Math.max(-trailmapSize.height/2, ny));
         a.angle = Math.random() * 2 * Math.PI;
     }
     a.x = nx;
@@ -137,9 +156,9 @@ var addAgent = function(a)
 // spawns in a circle centered at middle of screen x agents spread (0 to 1)
 var spawnRandomCircle = function(x, spread)
 {
-    var cx = Math.floor(trailmapSize.width / 2);
-    var cy = Math.floor(trailmapSize.height / 2); 
-    var maxDist = Math.min(cx, cy) * spread;
+    //var cx = Math.floor(trailmapSize.width / 2);
+    //var cy = Math.floor(trailmapSize.height / 2); 
+    var maxDist = Math.min(trailmapSize.width/2, trailmapSize.height/2) * spread;
 
     for (var i = 0; i < x; i++)
     {
@@ -147,7 +166,7 @@ var spawnRandomCircle = function(x, spread)
         var theta = Math.random() * 2 * Math.PI;
         var x1 = r * Math.cos(theta);
         var y1 = r * Math.sin(theta);
-        addAgent(new Agent(cx + x1, cy + y1, Math.random() * 2 * Math.PI));
+        addAgent(new Agent(x1, y1, Math.random() * 2 * Math.PI));
     }
 }
 
@@ -159,9 +178,10 @@ var newSim = function()
     resetTrailmap();
     emptyAgents();
     background("#000000");
+    strokeWeight(0.8);
 
     // make some agents using 
-    spawnRandomCircle(200, 0.5);
+    spawnRandomCircle(100, 0.5);
 
 };
 
@@ -169,7 +189,7 @@ var cv;
 
 var setup = function () 
 {
-    cv = createCanvas(windowWidth, windowHeight);
+    cv = createCanvas(windowWidth, windowHeight, WEBGL);
     cv.parent("slimemoldsketch");
     cv.style("display", "block");
     newSim();
@@ -189,32 +209,25 @@ var draw = function ()
     // render trailmap
     for (var tile in trailmap)
     {
+        decayTile(tile);
         drawTile(tile);
     }
-    decayTrails();
+
+    /*  slow?
     // clear tiles with negligible value
     for (var i = 0; i < trailmapClearQueue.length; i++)
     {
         delete trailmap[trailmapClearQueue[i]];
     }
     trailmapClearQueue = []; // clear the removal stuff
+    */
 
     // render agents
-    stroke(agentColor[0], agentColor[1], agentColor[2]);
+    //stroke(agentColor[0], agentColor[1], agentColor[2]);
     for (var i = 0; i < agents.length; i++)
     {
-        var a = agents[i];
-        walkAgent(a);
-        drawAgent(a);
+        walkAgent(agents[i]);
+        // optimization??
+        //drawAgent(a);
     }
-
-    stroke(255, 255, 255, 255);
-    fill(255, 255, 255, 255);
-    textSize(12);
-    text(fps, 16, 16);
 };
-
-//fps
-window.setInterval(function(){
-    fps = Math.floor(frameRate());
-},500);
