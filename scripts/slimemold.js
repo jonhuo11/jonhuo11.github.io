@@ -1,13 +1,4 @@
-/*
 
-ideas:
-
-https://p5js.org/reference/
-
-switch to pixijs for better performance
-https://pixijs.io/examples/#/demos-basic/container.js
-
-*/
 
 // ===== TRAIL MAP =====
 var trailmap;   // trails left by agents
