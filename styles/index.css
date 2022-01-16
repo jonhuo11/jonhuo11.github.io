@@ -63,6 +63,16 @@ a:hover {
     overflow: auto;
 }
 
+.hidescroll {
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+.hidescroll::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+
 /* desktop */
 @media only screen and (min-width: 40.5em) {
 
