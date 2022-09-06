@@ -4,4 +4,6 @@ const Fonts = createGlobalStyle`
     @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap")
 `;
 
+// TODO: font import not working on live github pages build
+
 export default Fonts;
