@@ -5,5 +5,6 @@ const Fonts = createGlobalStyle`
 `;
 
 // TODO: font import not working on live github pages build
+// try react-helmet
 
 export default Fonts;

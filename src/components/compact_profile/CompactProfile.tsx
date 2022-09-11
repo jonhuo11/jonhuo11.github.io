@@ -3,6 +3,7 @@ import {FaLinkedin, FaGithub} from "react-icons/fa";
 import TextUnderlineButtonWithIcon from "../text_underline_button_with_icon/TextUnderlineButtonWithIcon";
 
 const ProfileContainer = styled.div`
+    direction: ltr;
     width:75%;
 `;
 
@@ -22,6 +23,7 @@ export const RegularText = styled.p`
 `
 
 const LeftTextContainer = styled.div`
+    margin-top: 32px;
     flex-direction:column;
     justify-content:left;
     p {
