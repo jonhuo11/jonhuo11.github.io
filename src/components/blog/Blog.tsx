@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { IPageSwitchController } from "../pages/Page";
 import { BloggerAPIBaseURL, BloggerBlogID, BloggerPublicAPIKey } from "./BloggerAPIConstants";
-import BlogPostPreview from "./BlogPostPreview";
+import BlogPostPreview from "./BlogPost";
 
 const BlogPostPreviewListContainer = styled.div`
     display:flex;
@@ -16,7 +17,7 @@ const FetchBlogPosts = async () => {
     return results.data;
 };
 
-export default function Blog () {
+export default function Blog (props:IPageSwitchController) {
 
     const [posts, setPosts] = useState<Array<any>>([]);
 
@@ -30,7 +31,7 @@ export default function Blog () {
     return (<div>
         <BlogPostPreviewListContainer>
             {posts.map((post, i) => {
-                return <BlogPostPreview key={i} post={post}/>;
+                return <BlogPostPreview key={i} post={post} onSwitchPage={props.onSwitchPage}/>;
             })}
         </BlogPostPreviewListContainer>
     </div>);

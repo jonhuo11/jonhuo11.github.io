@@ -1,9 +1,12 @@
 import { ReactElement } from "react"
 
-export interface IPageComponentProps {
-    onSwitchPage?: (destPageTitle:string, context:Object)=>void,
-    context?: Object
+export interface IPageComponentProps extends IPageSwitchController{
+    context?: any
 };
+
+export interface IPageSwitchController {
+    onSwitchPage?: (destPageTitle:string, context: any) => void
+}
 
 export interface IPage {
     title: string,

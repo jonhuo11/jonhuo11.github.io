@@ -9,6 +9,8 @@ import ProfilePicture from "./assets/images/picofme.png";
 import BlogPostPreviewPage from "./components/pages/BlogPostPreviewPage";
 import { CreatePage } from "./components/pages/Page";
 import AboutPage from "./components/pages/AboutPage";
+import ContactPage from "./components/pages/ContactPage";
+import BlogPostPage from "./components/pages/BlogPostPage";
 
 export const ColorThemes = {
     main : {
@@ -75,7 +77,8 @@ export default function App() {
                     pages={[
                         CreatePage("Blog", <BlogPostPreviewPage></BlogPostPreviewPage>),
                         CreatePage("About", <AboutPage></AboutPage>),
-                        CreatePage("Contact", <p>Under construction</p>)
+                        CreatePage("Contact", <ContactPage></ContactPage>),
+                        CreatePage("Post", <BlogPostPage></BlogPostPage>, false)
                     ]}
                 />
             </AppContainer>

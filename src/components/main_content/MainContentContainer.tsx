@@ -33,7 +33,7 @@ export default function MainContentContainer (props:{
     leftSidebarWidth:string,
     pages:Array<IPage>
 }) {
-    const [activePageIndex, setActivePageIndex] = useState(0);
+    const [activePage, setActivePage] = useState({index: 0, context: ""});
 
     return <MainContent leftSidebarWidth={props.leftSidebarWidth}>
         <PageSwitcherContainer>{
@@ -44,18 +44,25 @@ export default function MainContentContainer (props:{
                         fontSize="32px"
                         dark
                         onClick={()=>{
-                            setActivePageIndex(i);
+                            setActivePage({
+                                index: i,
+                                context: ""
+                            });
                         }}
                     >{page.title}</TextUnderlineButton>;
                 }
             })
         }</PageSwitcherContainer>
 
-        {(activePageIndex !== null && activePageIndex >= 0 && activePageIndex < props.pages.length) ? (
-            cloneElement(props.pages[activePageIndex].content, {
-                onSwitchPage:(destPageTitle:string, context:Object) => {
-                    setActivePageIndex(props.pages.findIndex(e => e.title === destPageTitle));
-                }
+        {(activePage.index !== undefined && activePage.index >= 0 && activePage.index < props.pages.length) ? (
+            cloneElement(props.pages[activePage.index].content, {
+                onSwitchPage:(destPageTitle:string, context:any) => {
+                    setActivePage({
+                        index: props.pages.findIndex(e => e.title === destPageTitle),
+                        context: context
+                    });
+                },
+                context: activePage.context
             })
         ) : (
             <div><p>Bad active page index or no pages</p></div>
