@@ -31,7 +31,7 @@ export default function Blog (props:IPageSwitchController) {
     return (<div>
         <BlogPostPreviewListContainer>
             {posts.map((post, i) => {
-                return <BlogPostPreview key={i} post={post} onSwitchPage={props.onSwitchPage}/>;
+                return <BlogPostPreview key={i} post={post} onSwitchPage={props.onSwitchPage} preview/>;
             })}
         </BlogPostPreviewListContainer>
     </div>);

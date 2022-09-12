@@ -20,13 +20,18 @@ const PageSwitcherContainer = styled.div`
     flex-direction:row;
     overflow-x: scroll;
     margin: 0px 4px;
-    margin-left: 0px;
+    margin-left: -1.2px;
     margin-bottom: 32px;
     p {
         font-size: 32px;
         font-weight: bold;
         margin-right: 32px;
     }
+`;
+
+const PageSwitcherTopText = styled.p`
+    margin:4px 0px;
+    opacity:0.82;
 `;
 
 export default function MainContentContainer (props:{
@@ -36,6 +41,7 @@ export default function MainContentContainer (props:{
     const [activePage, setActivePage] = useState({index: 0, context: ""});
 
     return <MainContent leftSidebarWidth={props.leftSidebarWidth}>
+        <PageSwitcherTopText>Copyright © Jonathan Huo 2022.</PageSwitcherTopText>
         <PageSwitcherContainer>{
             props.pages.map((page, i) => {
                 if (page.visibleInPageSwitcher) {

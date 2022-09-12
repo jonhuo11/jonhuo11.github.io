@@ -1,7 +1,7 @@
 import styled, { ThemeProvider } from "styled-components";
 import { useEffect, useState } from "react";
+import {Helmet} from "react-helmet";
 
-import Fonts from "./fonts";
 import Sidebar, { TextUnderlineButton } from "./components/sidebar/Sidebar";
 import MainContentContainer from "./components/main_content/MainContentContainer";
 import CompactProfile from "./components/compact_profile/CompactProfile";
@@ -27,6 +27,12 @@ const AppContainer = styled.div`
     background-color: ${props => props.theme.light};
 `;
 
+const SidebarButtonContainer = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+`;
+
 const sidebarWidth = "25%";
 export default function App() {
     
@@ -38,9 +44,14 @@ export default function App() {
     }, []);
 
     return <div id="app-global-container">
+        <Helmet>
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin=""/>
+            <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet"/> 
+        </Helmet>
+
         <ThemeProvider theme={ColorThemes.main}>
             <AppContainer>
-                <Fonts/>
 
                 {
                     showSidebar ? (
@@ -57,18 +68,13 @@ export default function App() {
                             />
                         </Sidebar>
                     ) : (
-                        <div
-                            style={{
-                                position: "fixed",
-                                top: 0, left: 0
-                            }}
-                        >
+                        <SidebarButtonContainer>
                             <TextUnderlineButton 
                                 onClick={()=>{setShowSidebar(true);}}
                                 fontSize="14px"
                                 dark
                             >Show sidebar</TextUnderlineButton>
-                        </div>
+                        </SidebarButtonContainer>
                     )
                 }
 

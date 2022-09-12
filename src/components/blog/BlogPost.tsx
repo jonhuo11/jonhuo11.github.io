@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import styled from "styled-components";
+import { InfoPageTextLink } from "../pages/AboutPage";
 import { IPageSwitchController } from "../pages/Page";
 import { TextUnderlineButton } from "../sidebar/Sidebar";
 
@@ -23,12 +25,16 @@ export const BlogPostTimestamp = styled.p`
 `;
 
 export const BlogPostContent = styled.div`
-    font-family
+    p, span{
+        font-family: "Inter", sans-serif !important;
+    }
     font-size: 16px;
     font-weight: normal;
     margin-left: 0px;
     margin-right: 0px;
     margin-top: 16px;
+    display: flex;
+    flex-direction: column;
 `;
 
 export const ISOToReadableTime = (iso:string):string => {
@@ -39,27 +45,45 @@ export const ISOToReadableTime = (iso:string):string => {
     }).format(new Date(iso));
 };
 
+const PreviewFirstNodeInHTML = (rawhtml:string) => {
+    var parser = new DOMParser().parseFromString(rawhtml, "text/html");
+    return WrapInBlogPostContentComponent(`${parser.querySelector("p")?.innerText}`);
+};
+
+const WrapInBlogPostContentComponent = (innerhtml:(string|undefined)) => {
+    return <BlogPostContent
+        dangerouslySetInnerHTML={{__html:`${innerhtml}`}}
+    />;
+};
+
 interface IBlogPostProps extends IPageSwitchController {
     post: any,
     preview?:boolean
 }
 
 export default function BlogPost (props:IBlogPostProps) {
-    // TODO: trim content if preview is true
-    // try https://github.com/TroyAlford/react-jsx-parser to parse blogger html
+
+    useEffect(()=>{
+        PreviewFirstNodeInHTML(props.post.content)
+    }, [props.post]);
     
     return <BlogPostContainer>
         <BlogPostTitle 
             dark
-            onClick={()=>{
-                props.onSwitchPage?.call(null, "Post", props.post);
-            }}
+            onClick={()=>{props.onSwitchPage?.call(null, "Post", props.post);}}
         >{props.post.title}</BlogPostTitle>
         <BlogPostTimestamp>{ISOToReadableTime(props.post.published)}</BlogPostTimestamp>
-        <BlogPostContent
-            dangerouslySetInnerHTML={{
-                __html: `${props.post.content}`
-            }}
-        />
+        {
+            props.preview ? (
+                <>
+                    {PreviewFirstNodeInHTML(props.post.content)}<InfoPageTextLink
+                        dark
+                        onClick={()=>{props.onSwitchPage?.call(null, "Post", props.post);}}
+                    >Read more...</InfoPageTextLink>
+                </>
+            ) : (
+                WrapInBlogPostContentComponent(props.post.content)
+            )
+        }
     </BlogPostContainer>
 };
