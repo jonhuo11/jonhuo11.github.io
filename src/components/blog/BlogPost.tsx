@@ -13,9 +13,13 @@ export const BlogPostContainer = styled.div`
     }
 `;
 
-export const BlogPostTitle = styled(TextUnderlineButton)`
+export const BlogPostTitle = styled(TextUnderlineButton)<{disableHover?:boolean}>`
     font-size: 28px;
     font-weight: bold;
+    :hover {
+        text-decoration: ${props => props.disableHover ? "none" : "underline"};
+        cursor:default;
+    }
 `;
 
 export const BlogPostTimestamp = styled.p`
@@ -64,12 +68,13 @@ interface IBlogPostProps extends IPageSwitchController {
 export default function BlogPost (props:IBlogPostProps) {
 
     useEffect(()=>{
-        PreviewFirstNodeInHTML(props.post.content)
+        PreviewFirstNodeInHTML(props.post.content);
     }, [props.post]);
     
     return <BlogPostContainer>
         <BlogPostTitle 
             dark
+            disableHover={!props.preview}
             onClick={()=>{props.onSwitchPage?.call(null, "Post", props.post);}}
         >{props.post.title}</BlogPostTitle>
         <BlogPostTimestamp>{ISOToReadableTime(props.post.published)}</BlogPostTimestamp>

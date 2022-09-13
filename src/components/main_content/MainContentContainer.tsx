@@ -21,7 +21,8 @@ const PageSwitcherContainer = styled.div`
     overflow-x: scroll;
     margin: 0px 4px;
     margin-left: -1.2px;
-    margin-bottom: 32px;
+    padding-bottom: 24px;
+    margin-bottom: 8px;
     p {
         font-size: 32px;
         font-weight: bold;

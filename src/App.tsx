@@ -2,7 +2,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { useEffect, useState } from "react";
 import {Helmet} from "react-helmet";
 
-import Sidebar, { TextUnderlineButton } from "./components/sidebar/Sidebar";
+import Sidebar from "./components/sidebar/Sidebar";
 import MainContentContainer from "./components/main_content/MainContentContainer";
 import CompactProfile from "./components/compact_profile/CompactProfile";
 import ProfilePicture from "./assets/images/picofme.png";
@@ -32,7 +32,7 @@ const SidebarButtonContainer = styled.div`
     top: 0;
     left: 0;
 `;
-
+  
 const sidebarWidth = "25%";
 export default function App() {
     
@@ -41,6 +41,17 @@ export default function App() {
     // on first load
     useEffect(() => {
         document.body.style.backgroundColor = ColorThemes.main.light;
+
+        // window width
+        const onWindowResize = () => {
+            setShowSidebar(window.innerWidth > 768);
+        };
+        window.addEventListener('resize', onWindowResize);
+
+        // on dismount
+        return ()=>{
+            window.removeEventListener('resize', onWindowResize);
+        };
     }, []);
 
     return <div id="app-global-container">
@@ -54,7 +65,7 @@ export default function App() {
             <AppContainer>
 
                 {
-                    showSidebar ? (
+                    (showSidebar) ? (
                         <Sidebar 
                             width={sidebarWidth}
                             onHideSidebar={()=>{setShowSidebar(false);}}
@@ -68,6 +79,8 @@ export default function App() {
                             />
                         </Sidebar>
                     ) : (
+                        null
+                        /*
                         <SidebarButtonContainer>
                             <TextUnderlineButton 
                                 onClick={()=>{setShowSidebar(true);}}
@@ -75,6 +88,7 @@ export default function App() {
                                 dark
                             >Show sidebar</TextUnderlineButton>
                         </SidebarButtonContainer>
+                        */
                     )
                 }
 
