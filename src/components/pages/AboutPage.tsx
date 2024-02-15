@@ -33,11 +33,10 @@ export default function AboutPage(props:IPageComponentProps) {
     return <InfoPageContentContainer>
         <InfoPageHeader>Who made this blog?</InfoPageHeader>
         <InfoPageText>
-            Hi guys, my name is Jonathan, and I'm currently a software engineering student
+            Hello, my name is Jonathan, and I'm currently a software engineering student
             at the University of Waterloo.
             In this blog, I like to write about stuff that I think would be useful to share
-            with others. My main hobbies are programming, video games, weightlifting, and 
-            music, so you can expect most of my content to be related to these things.
+            with others.
             <br/><br/>
             My website and its content are largely inspired by&nbsp;
             <InfoPageTextLink 

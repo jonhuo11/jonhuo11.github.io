@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import styled from "styled-components";
 import { IPageSwitchController } from "../pages/Page";
 import { BloggerAPIBaseURL, BloggerBlogID, BloggerPublicAPIKey } from "./BloggerAPIConstants";
@@ -17,7 +17,7 @@ const FetchBlogPosts = async () => {
     return results.data;
 };
 
-export default function Blog (props:IPageSwitchController) {
+export default memo(function Blog (props:IPageSwitchController) {
 
     const [posts, setPosts] = useState<Array<any>>([]);
 
@@ -35,4 +35,4 @@ export default function Blog (props:IPageSwitchController) {
             })}
         </BlogPostPreviewListContainer>
     </div>);
-};
+});

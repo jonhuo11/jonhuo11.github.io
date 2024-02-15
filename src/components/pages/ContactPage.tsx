@@ -21,8 +21,7 @@ export default function ContactPage() {
             </InfoPageTextLink>.
             In real life, I am usually on campus during school terms so you might see me there sometimes.
             <br/><br/>
-            If you are a recruiter please send me any job offers you have as I
-            am almost always interested.
+            If you are a recruiter, please connect on Linkedin!
         </InfoPageText>
     </InfoPageContentContainer>);
 }
